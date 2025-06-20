@@ -1,15 +1,15 @@
-import express, { NextFunction, Request, Response } from "express";
-import cors from "cors";
+import { HandleError } from "./src/middlewares/error.middleware";
+import { swaggerDoc } from "./src/configs/swagger.config";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import { HandleError } from "./src/middlewares/error.middleware";
-const { errorMiddleware } = HandleError.getInstance();
-import dotenv from "dotenv";
-import { swaggerDoc } from "./src/config/swagger.config";
 import router from "./src/router";
-import { mongodbConnect } from "./src/config/mongodb.config";
-dotenv.config();
+import helmet from "helmet";
+import dotenv from "dotenv";
+import cors from "cors";
 
+const { errorMiddleware } = HandleError.getInstance();
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -17,25 +17,21 @@ app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
 
-swaggerDoc(app);
+process.env.NODE_ENV === "development" ? swaggerDoc(app) : null;
 app.use("/api/v1", router);
 
-Promise.all([mongodbConnect()])
-  .then(() => {
-    app.use((req: Request, res: Response) => {
-      res.status(404).json({ message: "Page not found" });
-    });
-    app.use(errorMiddleware());
-    app.listen(PORT, () => {
-      console.log(
-        `
-        Server is running on port ${PORT}
-        Swagger is running on: http://localhost:${PORT}/api-docs
-        `
-      );
-    });
-  })
-  .catch((error) => {
-    console.error("Error starting the server:", error);
-  });
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: "route not found" });
+});
+
+app.use(errorMiddleware());
+app.listen(PORT, () => {
+  console.log(
+    `
+     Server is running on port ${PORT}
+     Swagger is running on: http://localhost:${PORT}/api-docs
+    `
+  );
+});
