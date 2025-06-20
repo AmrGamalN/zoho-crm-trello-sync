@@ -22,14 +22,4 @@ export class DealController {
     );
     return controllerResponse(res, result);
   };
-
-  updateDeal = async (req: Request, res: Response) => {
-    const { dealId, boardId } = req.body;
-    const result = await this.dealService.updateDeal(
-      req.headers["Authorization"],
-      dealId,
-      boardId
-    );
-    return controllerResponse(res, result);
-  };
 }
