@@ -42,6 +42,17 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 - Environment-based configuration with `.env`
 - Swagger documentation
 
+##  Technologies Used
+
+- **Language:** TypeScript — for static typing and better developer experience.
+- **Backend Framework:** Node.js with Express.js — for building scalable RESTful APIs.
+- **Authentication:** Zoho OAuth2 (Authorization Code Flow) — to securely access Zoho CRM data.
+- **APIs Used:**
+  - Zoho CRM API v8
+  - Trello REST API
+- **Documentation:** Swagger (via swagger-ui-express) — for API preview and testing.
+- **Logging:** Winston — to log errors to files with support for different environments.
+- **Environment Management:** dotenv — for handling secrets and environment configs.
 
 ## Project Architecture
 
@@ -75,18 +86,6 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 ├── package.json
 └── README.md
 
-
-##  Technologies Used
-
-- **Language:** TypeScript — for static typing and better developer experience.
-- **Backend Framework:** Node.js with Express.js — for building scalable RESTful APIs.
-- **Authentication:** Zoho OAuth2 (Authorization Code Flow) — to securely access Zoho CRM data.
-- **APIs Used:**
-  - Zoho CRM API v8
-  - Trello REST API
-- **Documentation:** Swagger (via swagger-ui-express) — for API preview and testing.
-- **Logging:** Winston — to log errors to files with support for different environments.
-- **Environment Management:** dotenv — for handling secrets and environment configs.
 
 
 
