@@ -42,6 +42,7 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 - Environment-based configuration with `.env`
 - Swagger documentation
 
+
 ##  Technologies Used
 
 - **Language:** TypeScript — for static typing and better developer experience.
@@ -53,6 +54,7 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 - **Documentation:** Swagger (via swagger-ui-express) — for API preview and testing.
 - **Logging:** Winston — to log errors to files with support for different environments.
 - **Environment Management:** dotenv — for handling secrets and environment configs.
+
 
 ## Project Architecture
 
@@ -85,11 +87,3 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 ├── .env
 ├── package.json
 └── README.md
-
-
-
-
-
-
-
-
