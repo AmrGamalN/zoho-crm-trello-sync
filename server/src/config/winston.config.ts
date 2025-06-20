@@ -1,20 +1,28 @@
 import { createLogger, format, transports } from "winston";
 const { combine, timestamp, printf, colorize } = format;
+import dotenv from "dotenv";
+dotenv.config();
 
 const logFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
 });
 
 export const logger = createLogger({
-  level: 'info',
+  level: "info",
   format: combine(
-    timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     colorize(),
     logFormat
   ),
   transports: [
     new transports.Console(),
-    new transports.File({ filename: '/src/logs/error.log', level: 'error' }),
-    new transports.File({ filename: '/src/logs/combined.log' }),
-    ],
+    new transports.File({
+      filename:
+        process.env.NODE_ENV === "production"
+          ? "/src/logs/error.log"
+          : process.env.LOGGER_PATH,
+      level: "error",
+    }),
+    new transports.File({ filename: "/src/logs/combined.log" }),
+  ],
 });
