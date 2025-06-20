@@ -19,10 +19,8 @@ export class AuthController {
     res.status(302).json(authUrl.data.authUrl);
   };
 
-  getAccessToken = (req: Request, res: Response) => {
-    const { code } = req.query;
-    this.authService.getAccessToken(code as string).then((data) => {
-      res.json(data);
-    });
+  getAccessToken = async (req: Request, res: Response): Promise<void> => {
+    await this.authService.getAccessToken(req.query.code);
+    res.status(200).json({ message: "Access token generated" });
   };
 }

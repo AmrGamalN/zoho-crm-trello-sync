@@ -1,9 +1,16 @@
 import axios from "axios";
 import { serviceResponse } from "../utils/response.util";
-import { CustomError } from "../utils/CustomError.util";
+import { CustomError } from "../utils/customError.util";
 import { ResponseOptions } from "../types/response.type";
 import { HandleError } from "../middleware/error.middleware";
+import { ZohoToken } from "../models/mongodb/zohoToken.model";
 const { warpError } = HandleError.getInstance();
+const {
+  ZOHO_CLIENT_ID,
+  ZOHO_CLIENT_SECRET,
+  ZOHO_REDIRECT_URI,
+  ZOHO_ACCOUNTS_URL,
+} = process.env;
 
 export class AuthService {
   private static instance: AuthService;
@@ -16,8 +23,6 @@ export class AuthService {
   }
 
   generateAuthUrl = (): ResponseOptions => {
-    const { ZOHO_CLIENT_ID, ZOHO_REDIRECT_URI, ZOHO_ACCOUNTS_URL } =
-      process.env;
     const scope = ["ZohoCRM.modules.ALL", "ZohoCRM.settings.ALL"].join(",");
     return serviceResponse({
       statusText: "OK",
@@ -29,12 +34,6 @@ export class AuthService {
   };
 
   getAccessToken = warpError(async (code: string): Promise<ResponseOptions> => {
-    const {
-      ZOHO_CLIENT_ID,
-      ZOHO_CLIENT_SECRET,
-      ZOHO_REDIRECT_URI,
-      ZOHO_ACCOUNTS_URL,
-    } = process.env;
     const res = await axios.post(`${ZOHO_ACCOUNTS_URL}/oauth/v2/token`, null, {
       params: {
         code,
@@ -51,6 +50,8 @@ export class AuthService {
         false,
         "Access token not generated"
       );
+    await ZohoToken.deleteMany({});
+    await ZohoToken.create(res.data);
     return serviceResponse({
       statusText: "OK",
       message: "Access token generated",
