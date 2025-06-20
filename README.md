@@ -6,13 +6,11 @@ This project integrates **Zoho CRM** with **Trello** using public APIs.
 When a Deal in Zoho CRM reaches a specific stage and type, a new Trello Board is automatically created with lists and cards.  
 The Trello board ID is then saved back into Zoho CRM to link the two systems.
 
----
 
 ## API Docs for Preview
 
 - Swagger Docs: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
----
 
 ## Features
 
@@ -31,7 +29,6 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 -  Modular code with Singleton services and environment configuration.
 -  Using logger winston to save error in file
 
----
 
 ## What I Have Implemented
 
@@ -45,7 +42,6 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 - Environment-based configuration with `.env`
 - Swagger documentation
 
----
 
 ## Project Architecture
 
@@ -79,7 +75,6 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 ├── package.json
 └── README.md
 
----
 
 ##  Technologies Used
 
