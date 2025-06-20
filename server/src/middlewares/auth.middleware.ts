@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { ZohoToken } from "../models/mongodb/zohoToken.model";
-import { HandleError } from "./error.middleware";
+import { CustomError } from "../utils/customError.util";
+import { generateCookie } from "../utils/cookies.util";
 import axios from "axios";
-const { handleError } = HandleError.getInstance();
+const { ZOHO_CLIENT_SECRET, ZOHO_CLIENT_ID, ZOHO_ACCOUNTS_URL } = process.env;
 
 export class AuthMiddleware {
   private static instance: AuthMiddleware;
@@ -13,46 +13,29 @@ export class AuthMiddleware {
     return AuthMiddleware.instance;
   }
 
-  refreshToken = handleError(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const tokenDoc = await ZohoToken.findOne();
+  refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+    const accessToken = req.cookies?.access_token;
+    const refreshToken = req.cookies?.refresh_token;
 
-      if (!tokenDoc) throw new Error("No token stored");
+    if (!refreshToken || refreshToken === "undefined")
+      throw new CustomError("Unauthorized", 401, false, "Unauthorized");
 
-      const isExpired =
-        Date.now() - tokenDoc.created_at.getTime() > tokenDoc.expires_in * 1000;
-
-      let accessTokenToUse = tokenDoc.access_token;
-      if (isExpired) {
-        const refreshed = await this.createAccessToken(tokenDoc.refresh_token);
-        tokenDoc.access_token = refreshed.access_token;
-        tokenDoc.expires_in = refreshed.expires_in;
-        tokenDoc.created_at = new Date();
-        await tokenDoc.save();
-        accessTokenToUse = refreshed.access_token;
-      }
-      req.headers["Authorization"] = `Zoho-oauthtoken ${accessTokenToUse}`;
-      next();
+    if (!accessToken) {
+      const newAccessToken = await this.createNewAccessToken(refreshToken);
+      generateCookie(res, newAccessToken, refreshToken);
     }
-  );
+    return next();
+  };
 
-  private createAccessToken = async (refresh_token: string) => {
-    const response = await axios.post(
-      "https://accounts.zoho.com/oauth/v2/token",
-      null,
-      {
-        params: {
-          refresh_token,
-          client_id: process.env.ZOHO_CLIENT_ID,
-          client_secret: process.env.ZOHO_CLIENT_SECRET,
-          grant_type: "refresh_token",
-        },
-      }
-    );
-
-    return {
-      access_token: response.data.access_token,
-      expires_in: response.data.expires_in,
-    };
+  private createNewAccessToken = async (refresh_token: string) => {
+    const response = await axios.post(`${ZOHO_ACCOUNTS_URL}/token`, null, {
+      params: {
+        refresh_token,
+        client_id: ZOHO_CLIENT_ID,
+        client_secret: ZOHO_CLIENT_SECRET,
+        grant_type: "refresh_token",
+      },
+    });
+    return response.data.access_token;
   };
 }

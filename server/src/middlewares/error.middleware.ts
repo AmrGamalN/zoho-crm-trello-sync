@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { expressContext, expressFunc } from "../types/middleware.type";
 import { ResponseOptions } from "../types/response.type";
-import { logger } from "../config/winston.config";
+import { logger } from "../configs/winston.config";
 
 export class HandleError {
   private static instance: HandleError;

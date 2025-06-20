@@ -3,13 +3,13 @@ import { serviceResponse } from "../utils/response.util";
 import { CustomError } from "../utils/customError.util";
 import { ResponseOptions } from "../types/response.type";
 import { HandleError } from "../middlewares/error.middleware";
-import { ZohoToken } from "../models/mongodb/zohoToken.model";
 const { warpError } = HandleError.getInstance();
 const {
   ZOHO_CLIENT_ID,
   ZOHO_CLIENT_SECRET,
   ZOHO_REDIRECT_URI,
   ZOHO_ACCOUNTS_URL,
+  ZOHO_AUTH_URL,
 } = process.env;
 
 export class AuthService {
@@ -22,19 +22,18 @@ export class AuthService {
     return AuthService.instance;
   }
 
-  generateAuthUrl = (): ResponseOptions => {
-    const scope = ["ZohoCRM.modules.ALL", "ZohoCRM.settings.ALL"].join(",");
+  redirectAuth = (): ResponseOptions => {
     return serviceResponse({
       statusText: "OK",
-      message: "Redirecting to Zoho CRM",
+      message: "Redirecting to Zoho OAuth page",
       data: {
-        authUrl: `${ZOHO_ACCOUNTS_URL}/oauth/v2/auth?scope=${scope}&client_id=${ZOHO_CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${ZOHO_REDIRECT_URI}`,
+        authUrl: ZOHO_AUTH_URL,
       },
     });
   };
 
-  getAccessToken = warpError(async (code: string): Promise<ResponseOptions> => {
-    const res = await axios.post(`${ZOHO_ACCOUNTS_URL}/oauth/v2/token`, null, {
+  login = warpError(async (code: string): Promise<ResponseOptions> => {
+    const res = await axios.post(`${ZOHO_ACCOUNTS_URL}/token`, null, {
       params: {
         code,
         client_id: ZOHO_CLIENT_ID,
@@ -45,16 +44,14 @@ export class AuthService {
     });
     if (res.data.error)
       throw new CustomError(
-        "BadRequest",
-        400,
+        "Unauthorized",
+        401,
         false,
-        "Access token not generated"
+        "Error in getting access token"
       );
-    await ZohoToken.deleteMany({});
-    await ZohoToken.create(res.data);
     return serviceResponse({
       statusText: "OK",
-      message: "Access token generated",
+      message: "login successful",
       data: res.data,
     });
   });

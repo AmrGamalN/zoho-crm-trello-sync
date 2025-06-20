@@ -17,7 +17,7 @@ export class DealController {
 
   filterDeal = async (req: Request, res: Response) => {
     const result = await this.dealService.filterDeals(
-      req.headers["Authorization"],
+      req.cookies?.access_token,
       req.query
     );
     return controllerResponse(res, result);

@@ -31,7 +31,7 @@ export class DealService {
         `${ZOHO_API_BASE}/Deals/search?criteria=${encodedCriteria}`,
         {
           headers: {
-            Authorization: accessToken,
+            Authorization: `Zoho-oauthtoken ${accessToken}`,
           },
         }
       );
@@ -58,15 +58,18 @@ export class DealService {
     for (const deal of deals) {
       let boardId: string | null = null;
       try {
+        // create trello board
         const board = await this.trelloService.createBoard(deal.Deal_Name);
-
         boardId = board?.data;
+
+        // create trello lists
         const [todoList] = await Promise.all([
           this.trelloService.createList(boardId, "To Do"),
           this.trelloService.createList(boardId, "In Progress"),
           this.trelloService.createList(boardId, "Done"),
         ]);
 
+        // create trello cards
         const listId = todoList?.data;
         await Promise.all([
           this.trelloService.createCard(
@@ -82,7 +85,7 @@ export class DealService {
         await this.trelloService.deleteBoard(boardId);
         return serviceResponse({
           statusText: "BadRequest",
-          message: err.message,
+          message: err.message ?? "Error in creating trello board",
         });
       }
     }
@@ -105,7 +108,7 @@ export class DealService {
       },
       {
         headers: {
-          Authorization: accessToken,
+          Authorization: `Zoho-oauthtoken ${accessToken}`,
         },
       }
     );

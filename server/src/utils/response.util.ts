@@ -15,8 +15,8 @@ export const serviceResponse = ({
   const defaultMessages = {
     OK: "Operation successfully",
     BadRequest: "Invalid data",
-    NotFound: "Item not found",
-    InternalServerError: "InternalServerError",
+    NotFound: "Data not found",
+    InternalServerError: "Internal server error",
   };
   switch (statusText) {
     case "OK":
