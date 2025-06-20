@@ -14,6 +14,9 @@ const { refreshToken } = AuthMiddleware.getInstance();
  *   get:
  *     summary: Filter deals from Zoho
  *     tags: [Deal]
+ *     parameters:
+ *       - $ref: '#/components/parameters/Stage'
+ *       - $ref: '#/components/parameters/Type'
  *     responses:
  *       200:
  *         $ref: '#/components/responses/DealsResponse'

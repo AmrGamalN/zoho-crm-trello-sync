@@ -12,6 +12,7 @@ const router = Router();
  *     summary: Redirect to Zoho OAuth page
  *     description: Redirects the user to Zoho's authorization page.
  *     tags: [OAuth]
+ * 
  *     responses:
  *       302:
  *         description: Successfully redirected to Zoho

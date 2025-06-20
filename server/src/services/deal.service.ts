@@ -3,6 +3,8 @@ import { serviceResponse } from "../utils/response.util";
 import { ResponseOptions } from "../types/response.type";
 import { HandleError } from "../middlewares/error.middleware";
 const { warpError } = HandleError.getInstance();
+import qs from "qs";
+
 const { ZOHO_API_BASE, STAGE, TYPE } = process.env;
 
 export class DealService {
@@ -16,12 +18,21 @@ export class DealService {
   }
 
   filterDeals = warpError(
-    async (accessToken: string): Promise<ResponseOptions> => {
-      const response = await axios.get(`${ZOHO_API_BASE}/Deals`, {
-        headers: {
-          Authorization: accessToken,
-        },
-      });
+    async (
+      accessToken: string,
+      body: { stage: string; type: string }
+    ): Promise<ResponseOptions> => {
+      const encodedCriteria = encodeURIComponent(
+        `((Stage:equals:${body.stage}) and (Type:equals:${body.type}) and (Project_Board_ID_c:equals:null))`
+      );
+      const response = await axios.get(
+        `${ZOHO_API_BASE}/Deals/search?criteria=${encodedCriteria}`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      );
 
       const deals = response?.data?.data;
       if (!deals || !Array.isArray(deals))
@@ -30,18 +41,11 @@ export class DealService {
           message: "No data found",
         });
 
-      const filteredDeals = deals.filter(
-        (deal: any) =>
-          deal.Stage === STAGE &&
-          deal.Type === TYPE &&
-          !deal.Project_Board_ID__c
-      );
-
       return serviceResponse({
         statusText: "OK",
         message: "Deals filtered successfully",
         data: {
-          filteredDeals,
+          deals,
         },
       });
     }
