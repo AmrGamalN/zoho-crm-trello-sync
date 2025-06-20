@@ -2,7 +2,7 @@ import axios from "axios";
 import { serviceResponse } from "../utils/response.util";
 import { CustomError } from "../utils/customError.util";
 import { ResponseOptions } from "../types/response.type";
-import { HandleError } from "../middleware/error.middleware";
+import { HandleError } from "../middlewares/error.middleware";
 import { ZohoToken } from "../models/mongodb/zohoToken.model";
 const { warpError } = HandleError.getInstance();
 const {

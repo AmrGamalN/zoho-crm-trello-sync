@@ -23,10 +23,9 @@ const swaggerOptions = {
   ],
   apis: [
     `./src/routes/*.ts`,
-    `./src/swaggers/components/*.ts`,
-    `./src/swaggers/responses/*.ts`,
-    `./src/swaggers/tags/*.ts`,
-    `./src/swaggers/parameters/*.ts`,
+    `./src/swagger/components/*.ts`,
+    `./src/swagger/responses/*.ts`,
+    `./src/swagger/tags/*.ts`,
   ],
 };
 

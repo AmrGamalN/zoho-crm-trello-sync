@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import { HandleError } from "./src/middleware/error.middleware";
+import { HandleError } from "./src/middlewares/error.middleware";
 const { errorMiddleware } = HandleError.getInstance();
 import dotenv from "dotenv";
 import { swaggerDoc } from "./src/config/swagger.config";
