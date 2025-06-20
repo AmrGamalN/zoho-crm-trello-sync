@@ -16,7 +16,7 @@ export class HandleError {
   handleError = (fun: expressContext) => {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        await fun(req, res, next);
+        return await fun(req, res, next);
       } catch (err: any) {
         logger.error(`${err.message}\n${err.stack}`);
         next(err);
@@ -38,7 +38,7 @@ export class HandleError {
   warpError = (fn: expressFunc) => {
     return async (...args: any[]): Promise<ResponseOptions | void> => {
       try {
-        await fn(...args);
+        return await fn(...args);
       } catch (err: any) {
         logger.error(`${err.message}\n${err.stack}`);
         return {
