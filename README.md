@@ -28,6 +28,7 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 -  Centralized response and error structure.
 -  Modular code with Singleton services and environment configuration.
 -  Using logger winston to save error in file
+-  Using job cron to polling and fetch recently modified or created deals using Zoho CRM’s API.
 
 
 ## What I Have Implemented
