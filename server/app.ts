@@ -1,6 +1,7 @@
 import { HandleError } from "./src/middlewares/error.middleware";
 import { swaggerDoc } from "./src/configs/swagger.config";
 import express, { Request, Response } from "express";
+import { jobCron } from "./src/utils/jobCron.util";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import router from "./src/router";
@@ -19,12 +20,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
-process.env.NODE_ENV === "development" ? swaggerDoc(app) : null;
+if (process.env.NODE_ENV === "development") {
+  swaggerDoc(app);
+}
 app.use("/api/v1", router);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "route not found" });
 });
+
 
 app.use(errorMiddleware());
 app.listen(PORT, () => {
@@ -34,4 +38,5 @@ app.listen(PORT, () => {
      Swagger is running on: http://localhost:${PORT}/api-docs
     `
   );
+  jobCron();
 });

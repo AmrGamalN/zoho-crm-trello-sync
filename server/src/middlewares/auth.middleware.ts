@@ -27,7 +27,7 @@ export class AuthMiddleware {
     return next();
   };
 
-  private createNewAccessToken = async (refresh_token: string) => {
+   createNewAccessToken = async (refresh_token: string) => {
     const response = await axios.post(`${ZOHO_ACCOUNTS_URL}/token`, null, {
       params: {
         refresh_token,
