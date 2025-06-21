@@ -46,7 +46,7 @@ After starting the server, you can access the Swagger UI by visiting the followi
 ```bash
 http://localhost:3000/api-docs/
 ```
-- ![Capture](https://github.com/user-attachments/assets/8ea6f468-8916-4ee1-9cf7-eae3c3153872)
+![Capture](https://github.com/user-attachments/assets/8ea6f468-8916-4ee1-9cf7-eae3c3153872)
 
 
 ## What I Have Implemented
