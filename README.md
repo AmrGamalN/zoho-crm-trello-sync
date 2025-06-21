@@ -6,12 +6,6 @@ This project integrates **Zoho CRM** with **Trello** using public APIs.
 When a Deal in Zoho CRM reaches a specific stage and type, a new Trello Board is automatically created with lists and cards.  
 The Trello board ID is then saved back into Zoho CRM to link the two systems.
 
-
-## API Docs for Preview
-
-- Swagger Docs: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
-
-
 ## Features
 
 -  Authenticate with Zoho CRM using OAuth2.
@@ -29,6 +23,30 @@ The Trello board ID is then saved back into Zoho CRM to link the two systems.
 -  Modular code with Singleton services and environment configuration.
 -  Using logger winston to save error in file
 -  Using job cron to polling and fetch recently modified or created deals using Zoho CRM’s API.
+
+### 2. Install dependencies
+In your project directory, run:
+
+```bash
+npm install
+```
+
+### 3. Setup environment variables
+Create a .env file in the root of the project directory and add variables
+
+### 4. Run the project
+To run the project locally, execute:
+
+```bash
+npm run start:dev
+```
+
+-  ## Access the Swagger API Documentation
+After starting the server, you can access the Swagger UI by visiting the following URL:
+```bash
+http://localhost:3000/api-docs/
+```
+- ![Capture](https://github.com/user-attachments/assets/8ea6f468-8916-4ee1-9cf7-eae3c3153872)
 
 
 ## What I Have Implemented
