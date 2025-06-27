@@ -38,5 +38,5 @@ app.listen(PORT, () => {
      Swagger is running on: http://localhost:${PORT}/api-docs
     `
   );
-  jobCron();
+  // jobCron();
 });
