@@ -24,6 +24,7 @@ export class DealService {
       accessToken: string,
       body: { stage: string; type: string }
     ): Promise<ResponseOptions> => {
+      console.log("Received new deal from Zoho:");
       const encodedCriteria = encodeURIComponent(
         `((Stage:equals:${body.stage}) and (Type:equals:${body.type}) and (Project_Board_ID_c:equals:null))`
       );

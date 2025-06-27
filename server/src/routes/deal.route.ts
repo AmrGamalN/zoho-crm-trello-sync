@@ -8,10 +8,16 @@ const controller = DealController.getInstance();
 const { handleError } = HandleError.getInstance();
 const { refreshToken } = AuthMiddleware.getInstance();
 
-router.get(
+router.post(
   "/filter",
   handleError(refreshToken),
   handleError(controller.filterDeal.bind(controller))
+);
+
+router.post(
+  "/create-board",
+  handleError(refreshToken),
+  handleError(controller.createBoard.bind(controller))
 );
 
 export default router;

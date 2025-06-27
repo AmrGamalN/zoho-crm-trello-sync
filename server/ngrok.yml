@@ -1,0 +1,21 @@
+version: "2"
+authtoken: 2tULLde2Awm20NzcQ66gH81YdVN_6pwdWYRSgzxZamVZ7u1HV
+region: eu
+
+tunnels:
+  server1:
+    proto: http
+    addr: 3000
+    # subdomain: server1
+    # auth: "admin:123456"
+    # bind_tls: both
+
+  # server2:
+  #   proto: http
+  #   addr: 4000
+  #   subdomain: server2
+  #   inspect: false
+
+  # database:
+  #   proto: tcp
+  #   addr: 27017
